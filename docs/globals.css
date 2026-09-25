@@ -1,0 +1,319 @@
+/*
+ * app/globals.css — design token source of truth.
+ * Tailwind CSS v4 + shadcn/ui. Dark-only theme.
+ * Rules and token responsibilities: docs/design.md
+ *
+ * Requires in app/layout.tsx:
+ *   <html lang="…" className="dark {font variables}">
+ *   <body className="grain">
+ * Font variables: --font-space-grotesk, --font-ibm-plex-sans,
+ *                 --font-jetbrains-mono, --font-noto-sans-jp (optional)
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css"; /* installed by shadcn init; remove if unused */
+
+/* shadcn components use `dark:` variants; <html class="dark"> is always set. */
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------ */
+/* 1. Raw tokens                                                       */
+/* ------------------------------------------------------------------ */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces — neutral warm near-black (hue 85, very low chroma) */
+  --background: oklch(0.155 0.006 85);
+  --foreground: oklch(0.95 0.01 90);
+
+  --card: oklch(0.19 0.006 85);
+  --card-foreground: var(--foreground);
+
+  --popover: oklch(0.21 0.007 85);
+  --popover-foreground: var(--foreground);
+
+  /* Primary — acid green. Text on it is always dark. */
+  --primary: oklch(0.78 0.19 145);
+  --primary-foreground: oklch(0.17 0.03 145);
+
+  --secondary: oklch(0.25 0.007 85);
+  --secondary-foreground: var(--foreground);
+
+  --muted: oklch(0.22 0.006 85);
+  --muted-foreground: oklch(0.72 0.012 90);
+
+  /* shadcn "accent" = hover surface for menu items / ghost buttons.
+     It is deliberately NOT the orange. */
+  --accent: oklch(0.26 0.008 85);
+  --accent-foreground: var(--foreground);
+
+  /* Highlight — hot orange. Status, warnings, rare emphasis only. */
+  --highlight: oklch(0.74 0.19 50);
+  --highlight-foreground: oklch(0.17 0.03 50);
+
+  --destructive: oklch(0.64 0.22 25);
+  --destructive-foreground: oklch(0.17 0.03 25); /* dark text: 5.1:1 (white was 3.5:1) */
+
+  /* Lines */
+  --border: oklch(0.34 0.008 85);
+  --border-strong: var(--foreground);
+  --input: oklch(0.52 0.008 85); /* ≥3:1 against background (WCAG 1.4.11) */
+  --ring: var(--primary);
+
+  /* Shape */
+  --radius: 0.25rem;
+
+  /* Layout */
+  --header-height: 3.5rem; /* sticky header; also the anchor-scroll offset */
+
+  /* CJK fallback chain, appended to every Latin stack */
+  --font-stack-cjk:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    var(--font-noto-sans-jp, "Noto Sans JP"),
+    "Yu Gothic", "YuGothic", Meiryo,
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic";
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Tailwind theme mapping                                           */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Fonts (fallbacks keep the stack valid if a next/font variable is missing) */
+  --font-display: var(--font-space-grotesk, "Space Grotesk"), var(--font-stack-cjk), sans-serif;
+  --font-sans: var(--font-ibm-plex-sans, "IBM Plex Sans"), var(--font-stack-cjk), sans-serif;
+  --font-mono: var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Type scale — use these instead of arbitrary text-[...] sizes */
+  --text-hero: clamp(3rem, 8vw, 7rem);
+  --text-hero--line-height: 0.92;
+  --text-hero--letter-spacing: -0.04em;
+  --text-hero--font-weight: 600;
+
+  --text-section: clamp(2rem, 4vw, 4rem);
+  --text-section--line-height: 1;
+  --text-section--letter-spacing: -0.025em;
+  --text-section--font-weight: 600;
+
+  --text-subhead: 1.375rem;
+  --text-subhead--line-height: 1.3;
+  --text-subhead--letter-spacing: -0.01em;
+  --text-subhead--font-weight: 500;
+
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.5;
+
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.04em;
+
+  /* Widths */
+  --container-measure: 68ch;
+  --container-page: 80rem;
+
+  /* Radius — larger steps are clamped so soft corners are impossible */
+  --radius-xs: calc(var(--radius) * 0.5);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: var(--radius);
+
+  /* Shadows — soft scale neutralized; hard offset shadows only */
+  --shadow-2xs: 0 0 #0000;
+  --shadow-xs: 0 0 #0000;
+  --shadow-sm: 0 0 #0000;
+  --shadow: 0 0 #0000;
+  --shadow-md: 0 0 #0000;
+  --shadow-lg: 0 0 #0000;
+  --shadow-xl: 0 0 #0000;
+  --shadow-2xl: 0 0 #0000;
+  --shadow-hard: 4px 4px 0 var(--foreground);
+  --shadow-hard-sm: 2px 2px 0 var(--foreground);
+  --shadow-hard-primary: 4px 4px 0 var(--primary);
+
+  /* Motion */
+  --default-transition-duration: 150ms;
+  --ease-snap: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Base                                                             */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Anchor links (#projects) stop below the sticky header */
+    scroll-padding-top: var(--header-height);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans text-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  p, li, dd, figcaption {
+    text-wrap: pretty;
+  }
+
+  code, kbd, samp, pre, time {
+    @apply font-mono;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  img, video, svg {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Utilities                                                        */
+/* ------------------------------------------------------------------ */
+
+/* Page texture. Static, one layer, very low opacity. Apply to <body> only. */
+@utility grain {
+  &::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Screenshot frame: border + muted plate + tamed brightness. */
+@utility shot {
+  display: block;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--muted);
+
+  & :is(img, video) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius) * 0.5);
+    filter: brightness(0.92);
+  }
+}
+
+/* Mono metadata label: dates, tags, versions. */
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  letter-spacing: var(--text-meta--letter-spacing);
+  color: var(--muted-foreground);
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Language-specific typography                                     */
+/*    Unlayered on purpose: must win over type-scale utilities.        */
+/* ------------------------------------------------------------------ */
+
+:lang(ja) :is(p, li, dd, figcaption, blockquote) {
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+:lang(ja) :is(h1, h2, h3, h4) {
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  word-break: auto-phrase;
+}
+
+:lang(ja) :is(em, i, cite) {
+  font-style: normal;
+  font-weight: 600;
+}
+
+:lang(ko) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+:lang(ko) :is(p, li, dd) {
+  line-height: 1.75;
+}
+
+/* ------------------------------------------------------------------ */
+/* 6. Reduced motion                                                   */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portfolio Theme Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Tokens mirrored 1:1 from app/globals.css (dark-only by design) */
+:root{
+  color-scheme:dark;
+  --background:oklch(0.155 0.006 85);
+  --foreground:oklch(0.95 0.01 90);
+  --card:oklch(0.19 0.006 85);
+  --popover:oklch(0.21 0.007 85);
+  --primary:oklch(0.78 0.19 145);
+  --primary-foreground:oklch(0.17 0.03 145);
+  --secondary:oklch(0.25 0.007 85);
+  --muted:oklch(0.22 0.006 85);
+  --muted-foreground:oklch(0.72 0.012 90);
+  --accent:oklch(0.26 0.008 85);
+  --highlight:oklch(0.74 0.19 50);
+  --highlight-foreground:oklch(0.17 0.03 50);
+  --destructive:oklch(0.64 0.22 25);
+  --destructive-foreground:oklch(0.17 0.03 25);
+  --border:oklch(0.34 0.008 85);
+  --border-strong:var(--foreground);
+  --input:oklch(0.52 0.008 85);
+  --ring:var(--primary);
+  --radius:0.25rem;
+  --shadow-hard:4px 4px 0 var(--foreground);
+  --shadow-hard-sm:2px 2px 0 var(--foreground);
+
+  --cjk:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,"Apple SD Gothic Neo","Noto Sans KR";
+  --font-display:"Space Grotesk",var(--cjk),sans-serif;
+  --font-sans:"IBM Plex Sans",var(--cjk),sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --text-hero:clamp(3rem,8vw,7rem);
+  --text-section:clamp(2rem,4vw,4rem);
+  --text-subhead:1.375rem;
+  --text-body:1.0625rem;
+  --text-small:0.9375rem;
+  --text-meta:0.8125rem;
+
+  /* mock-screenshot surfaces only (stand-ins for real captures) */
+  --mock-bg:oklch(0.97 0.004 90);
+  --mock-ink:oklch(0.3 0.01 90);
+  --mock-line:oklch(0.88 0.006 90);
+  --mock-tile:oklch(0.92 0.006 90);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--background)}
+body{
+  margin:0;background:var(--background);color:var(--foreground);
+  font-family:var(--font-sans);font-size:var(--text-body);line-height:1.6;
+  -webkit-font-smoothing:antialiased;padding-inline:clamp(16px,4vw,48px);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;margin:0}
+p{margin:0;text-wrap:pretty}
+a{color:var(--primary);text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+::selection{background:var(--primary);color:var(--primary-foreground)}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.page{max-width:80rem;margin-inline:auto}
+.meta{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em;color:var(--muted-foreground);line-height:1.4}
+.measure{max-width:68ch}
+.muted{color:var(--muted-foreground)}
+
+/* JP / KO typography rules, same as globals.css */
+:lang(ja) :is(p,li,dd){line-height:1.8;letter-spacing:.02em}
+:lang(ja) :is(h1,h2,h3){letter-spacing:.01em!important;line-height:1.35!important;word-break:auto-phrase}
+
+/* ---------- top bar ---------- */
+.bar{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--background);
+  display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;
+  padding-block:14px;border-bottom:1px solid var(--border);
+}
+.bar nav{display:flex;flex-wrap:wrap;gap:4px 20px}
+.bar nav a{color:var(--foreground);text-decoration:none;font-size:var(--text-small)}
+.bar nav a:hover{color:var(--primary)}
+.seg{display:inline-flex;border:1px solid var(--input);border-radius:var(--radius)}
+.seg button{
+  font:inherit;font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em;
+  background:transparent;color:var(--muted-foreground);border:0;padding:6px 10px;cursor:pointer;
+  transition:background-color .15s,color .15s;
+}
+.seg button+button{border-left:1px solid var(--input)}
+.seg button[aria-pressed="true"]{background:var(--primary);color:var(--primary-foreground)}
+.seg button:hover:not([aria-pressed="true"]){background:var(--accent);color:var(--foreground)}
+
+.note{
+  margin-block:20px 0;padding:10px 14px;border-left:2px solid var(--highlight);
+  background:var(--muted);font-size:var(--text-small);color:var(--muted-foreground)
+}
+.note strong{color:var(--highlight);font-weight:500}
+
+/* ---------- hero ---------- */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.hero{padding-block:clamp(56px,10vw,120px) clamp(48px,8vw,96px);row-gap:32px}
+.hero-main{grid-column:1 / span 8}
+.hero-side{grid-column:10 / span 3;align-self:end;display:grid;gap:20px}
+.hero .eyebrow{margin-bottom:24px}
+.hero h1{font-size:var(--text-hero);line-height:.92;letter-spacing:-.04em;font-weight:600}
+.hero h1 .cursor{color:var(--primary)}
+.hero .role{font-family:var(--font-display);font-size:var(--text-subhead);font-weight:500;margin-top:28px;letter-spacing:-.01em}
+.hero .pitch{margin-top:16px;max-width:52ch;color:var(--muted-foreground)}
+.links{list-style:none;margin:0;padding:0;display:grid;gap:10px;border-top:1px solid var(--border-strong);padding-top:14px}
+.links li{display:flex;justify-content:space-between;gap:12px}
+.links a{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em}
+
+/* ---------- buttons (cva stand-in) ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;font:inherit;font-weight:500;font-size:var(--text-small);
+  padding:10px 16px;border-radius:var(--radius);border:1px solid transparent;cursor:pointer;text-decoration:none;
+  transition:transform .15s,box-shadow .15s,background-color .15s;
+}
+.btn-primary{background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow-hard-sm)}
+.btn-outline{background:transparent;color:var(--foreground);border-color:var(--border-strong)}
+.btn-outline:hover{background:var(--accent)}
+.btn-secondary{background:var(--secondary);color:var(--foreground)}
+.btn-ghost{background:transparent;color:var(--foreground)}
+.btn-ghost:hover{background:var(--accent)}
+.btn-destructive{background:var(--destructive);color:var(--destructive-foreground)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ---------- sections ---------- */
+section.block{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--border)}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:clamp(32px,5vw,56px)}
+.sec-head h2{font-size:var(--text-section);line-height:1;letter-spacing:-.025em;font-weight:600}
+
+/* projects: three different compositions */
+.proj{row-gap:24px;padding-block:40px;border-top:1px solid var(--border)}
+.proj:first-of-type{border-top:0;padding-top:0}
+.proj h3{font-size:var(--text-subhead);line-height:1.3;letter-spacing:-.01em;font-weight:600}
+.proj .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tag{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.02em;padding:2px 8px;border:1px solid var(--border);border-radius:var(--radius);color:var(--muted-foreground)}
+.status{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em;display:inline-flex;align-items:center;gap:6px;color:var(--highlight)}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--highlight)}
+.proj dl{display:grid;grid-template-columns:max-content 1fr;gap:10px 20px;margin:20px 0 0}
+.proj dt{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em;color:var(--muted-foreground);padding-top:3px}
+.proj dd{margin:0}
+.proj .actions{display:flex;flex-wrap:wrap;gap:16px;margin-top:20px;font-size:var(--text-small)}
+.p1 .shot-wrap{grid-column:1 / span 7}
+.p1 .text{grid-column:8 / span 5}
+.p2 .text{grid-column:1 / span 5;grid-row:1}
+.p2 .shot-wrap{grid-column:7 / span 6;grid-row:1}
+.p3 .text{grid-column:1 / span 4}
+.p3 .breakdown{grid-column:6 / span 7}
+
+/* screenshot frame (= .shot utility) */
+.shot{display:block;padding:.5rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--muted);margin:0}
+.shot .mock{filter:brightness(.92);border-radius:calc(var(--radius)*.5);overflow:hidden;background:var(--mock-bg);color:var(--mock-ink);aspect-ratio:16/10;max-width:100%;display:grid;grid-template-rows:auto 1fr}
+.shot figcaption{margin-top:8px}
+.mock-top{display:flex;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--mock-line);font-family:var(--font-sans);font-size:11px;font-weight:600}
+.mock-top span{flex:1}
+.mock-top i{display:block;width:34px;height:7px;background:var(--mock-line);border-radius:2px}
+.mock-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px}
+.mock-grid div{background:var(--mock-tile);border-radius:2px;display:grid;grid-template-rows:1fr auto;gap:4px;padding:6px}
+.mock-grid div::after{content:"";height:5px;width:60%;background:var(--mock-line)}
+.mock-rows{padding:8px 12px;display:grid;gap:6px;align-content:start}
+.mock-row{display:grid;grid-template-columns:48px 1fr 72px;gap:10px;align-items:center;font-family:var(--font-mono);font-size:10px;padding:5px 0;border-bottom:1px solid var(--mock-line)}
+.mock-row b{font-weight:500;justify-self:start;padding:1px 6px;border-radius:2px;background:var(--mock-tile)}
+.mock-row i{display:block;height:5px;background:var(--mock-line);width:80%}
+
+.breakdown{border:1px solid var(--border-strong);border-radius:var(--radius);box-shadow:var(--shadow-hard)}
+.breakdown-row{display:grid;grid-template-columns:9rem 1fr;gap:16px;padding:14px 18px;border-top:1px solid var(--border)}
+.breakdown-row:first-child{border-top:0}
+.breakdown-row p{font-size:var(--text-small)}
+
+/* journey */
+.journey{list-style:none;margin:0;padding:0}
+.journey li{display:grid;grid-template-columns:8rem 7rem 1fr;gap:8px 24px;padding-block:20px;border-top:1px solid var(--border);align-items:baseline}
+.journey li:last-child{border-bottom:1px solid var(--border)}
+.journey .place{font-family:var(--font-display);font-weight:600;font-size:var(--text-small);letter-spacing:.02em;text-transform:uppercase}
+.journey h3{font-size:1.125rem;font-weight:600;letter-spacing:-.01em}
+.journey p{color:var(--muted-foreground);font-size:var(--text-small);margin-top:4px;max-width:60ch}
+.journey .now .place{color:var(--primary)}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 32px}
+.skills h3{font-size:var(--text-small);font-family:var(--font-mono);font-weight:500;letter-spacing:.04em;color:var(--muted-foreground);text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--border-strong)}
+.skills ul{list-style:none;margin:0;padding:0}
+.skills li{display:flex;justify-content:space-between;gap:16px;padding-block:10px;border-bottom:1px solid var(--border);font-size:var(--text-small)}
+.skills li span:first-child{font-weight:500}
+.skills li a{font-size:var(--text-meta);font-family:var(--font-mono);white-space:nowrap}
+.skills .skill-wide{grid-column:1 / -1}
+.skills .skill-wide ul{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));column-gap:32px}
+
+/* contact */
+.contact{row-gap:32px;align-items:end}
+.contact .big{grid-column:1 / span 8;font-family:var(--font-display);font-size:clamp(1.75rem,4.5vw,3.5rem);font-weight:600;letter-spacing:-.025em;line-height:1.05;word-break:break-all}
+.contact .big small{display:block;font-family:var(--font-sans);font-size:var(--text-body);font-weight:400;color:var(--muted-foreground);letter-spacing:0;margin-top:12px;word-break:normal}
+.contact .side{grid-column:10 / span 3;display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- specimen ---------- */
+.spec-divider{margin-block:clamp(64px,10vw,120px) 0;padding-block:24px;border-top:4px solid var(--foreground);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.spec-divider h2{font-size:var(--text-section);letter-spacing:-.025em;line-height:1}
+.spec{padding-block:48px;border-top:1px solid var(--border);row-gap:24px}
+.spec > .label{grid-column:1 / span 3}
+.spec > .body{grid-column:4 / span 9;min-width:0}
+.spec .label h3{font-size:var(--text-subhead);font-weight:600;letter-spacing:-.01em}
+.spec .label p{font-size:var(--text-small);color:var(--muted-foreground);margin-top:8px}
+
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:16px}
+.sw{display:grid;gap:8px}
+.sw .chip{height:64px;border-radius:var(--radius);border:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;padding:8px 10px;font-family:var(--font-mono);font-size:12px}
+.sw .name{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.02em}
+.sw .val{font-family:var(--font-mono);font-size:11px;color:var(--muted-foreground)}
+
+.scale{display:grid;gap:0}
+.scale-row{display:grid;grid-template-columns:8.5rem 1fr;gap:16px;align-items:baseline;padding-block:14px;border-top:1px solid var(--border);min-width:0}
+.scale-row > div{min-width:0;overflow-wrap:anywhere}
+
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:32px}
+.comp{display:grid;gap:12px;align-content:start}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.field{display:grid;gap:6px}
+.field label{font-size:var(--text-small);font-weight:500}
+.input{font:inherit;font-size:var(--text-small);background:var(--background);color:var(--foreground);border:1px solid var(--input);border-radius:var(--radius);padding:9px 12px;width:100%}
+.input::placeholder{color:var(--muted-foreground)}
+.input:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.input[aria-invalid="true"]{border-color:var(--destructive)}
+.err{font-size:var(--text-meta);color:var(--destructive);font-family:var(--font-mono)}
+.menu{background:var(--popover);border:1px solid var(--border);border-radius:var(--radius);padding:4px;box-shadow:var(--shadow-hard-sm)}
+.menu div{padding:8px 10px;border-radius:calc(var(--radius)*.5);font-size:var(--text-small);display:flex;justify-content:space-between}
+.menu div.hl{background:var(--accent)}
+.menu div .meta{font-size:11px}
+.dialog{background:var(--popover);border:1px solid var(--border-strong);border-radius:var(--radius);box-shadow:var(--shadow-hard);padding:20px;display:grid;gap:12px}
+.dialog h4{font-size:1.125rem;font-weight:600}
+.dialog p{font-size:var(--text-small);color:var(--muted-foreground)}
+.code{font-family:var(--font-mono);font-size:13px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;overflow-x:auto;line-height:1.6;white-space:pre;margin:0}
+.code .k{color:var(--primary)} .code .s{color:var(--highlight)} .code .c{color:var(--muted-foreground)}
+
+.dodont{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.dd h4{font-family:var(--font-mono);font-size:var(--text-meta);letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;font-weight:500}
+.dd.do h4{color:var(--primary)} .dd.dont h4{color:var(--destructive)}
+.dd ul{margin:0;padding-left:1.1em;display:grid;gap:6px;font-size:var(--text-small)}
+
+footer{padding-block:48px;border-top:1px solid var(--border);margin-top:48px}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .hero-main,.hero-side,.p1 .shot-wrap,.p1 .text,.p2 .text,.p2 .shot-wrap,.p3 .text,.p3 .breakdown,
+  .contact .big,.contact .side,.spec > .label,.spec > .body{grid-column:1 / -1;grid-row:auto}
+  .hero-side{max-width:28rem}
+  .skills{grid-template-columns:1fr}
+  .journey li{grid-template-columns:6.5rem 1fr}
+  .journey li .place{grid-column:2;grid-row:1}
+  .journey li .date{grid-row:1}
+  .journey li > div{grid-column:1 / -1}
+  .dodont{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .breakdown-row{grid-template-columns:1fr;gap:4px}
+  .scale-row{grid-template-columns:1fr;gap:4px}
+  .mock-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header class="bar">
+  <span class="meta">~/portfolio <span style="color:var(--primary)">●</span> theme preview</span>
+  <nav aria-label="Sections">
+    <a href="#work" data-en="Work" data-ja="制作">Work</a>
+    <a href="#journey" data-en="Journey" data-ja="経歴">Journey</a>
+    <a href="#skills" data-en="Skills" data-ja="スキル">Skills</a>
+    <a href="#contact" data-en="Contact" data-ja="連絡先">Contact</a>
+    <a href="#specimen">Tokens</a>
+  </nav>
+  <div class="seg" role="group" aria-label="Language">
+    <button type="button" id="lang-en" aria-pressed="true" data-lang="en">EN</button>
+    <button type="button" id="lang-ja" aria-pressed="false" data-lang="ja">日本語</button>
+  </div>
+</header>
+
+<p class="note"><strong>Sample page.</strong> Layout and styling use your tokens exactly. Names, dates and project details are stand-ins taken from what you've told me; replace them with your own before shipping. Try the 日本語 toggle to see the Japanese typography rules.</p>
+
+<!-- ============ HERO ============ -->
+<section class="grid hero" aria-labelledby="hero-name">
+  <div class="hero-main">
+    <p class="meta eyebrow" data-en="Osaka, Japan · open to full-stack roles" data-ja="大阪 · フルスタック職を希望">Osaka, Japan · open to full-stack roles</p>
+    <h1 id="hero-name">Your Name<span class="cursor">_</span></h1>
+    <p class="role" data-en="Full-stack engineer — TypeScript / React / Node.js" data-ja="フルスタックエンジニア — TypeScript / React / Node.js">Full-stack engineer — TypeScript / React / Node.js</p>
+    <p class="pitch" data-en="I model the domain before I write the UI, and I can explain the trade-offs in Japanese, English or Korean." data-ja="UIを書く前にドメインを設計します。技術的なトレードオフを日本語・英語・韓国語で説明できます。">I model the domain before I write the UI, and I can explain the trade-offs in Japanese, English or Korean.</p>
+    <div class="row" style="margin-top:32px">
+      <a class="btn btn-primary" href="#work" data-en="See selected work" data-ja="制作物を見る">See selected work</a>
+      <a class="btn btn-outline" href="#contact" data-en="Résumé (PDF)" data-ja="履歴書（PDF）">Résumé (PDF)</a>
+    </div>
+  </div>
+  <aside class="hero-side" aria-label="Links">
+    <ul class="links">
+      <li><span class="meta">GitHub</span><a href="#contact">github.com/you</a></li>
+      <li><span class="meta">Email</span><a href="#contact">you@example.com</a></li>
+      <li><span class="meta">Languages</span><span class="meta" style="color:var(--foreground)">KO · JA N1 · EN</span></li>
+    </ul>
+  </aside>
+</section>
+
+<!-- ============ WORK ============ -->
+<section class="block" id="work" aria-labelledby="work-h">
+  <div class="sec-head">
+    <h2 id="work-h" data-en="Selected work" data-ja="主な制作物">Selected work</h2>
+    <span class="meta">03 case studies</span>
+  </div>
+
+  <!-- Project 1: image-first -->
+  <article class="grid proj p1">
+    <div class="shot-wrap">
+      <figure class="shot">
+        <div class="mock" role="img" aria-label="Mock storefront screen with a product grid">
+          <div class="mock-top"><span>VocaloCart</span><i></i><i></i></div>
+          <div class="mock-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+        <figcaption class="meta">Storefront · product listing (placeholder capture)</figcaption>
+      </figure>
+    </div>
+    <div class="text">
+      <span class="status" data-en="Frontend redesign in progress" data-ja="フロントエンド改修中">Frontend redesign in progress</span>
+      <h3 style="margin-top:10px">VocaloCart</h3>
+      <p class="muted" style="margin-top:8px" data-en="An e-commerce shop for Vocaloid merchandise, built end to end on my own." data-ja="ボカロ関連グッズのECサイト。設計から実装まで一人で担当。">An e-commerce shop for Vocaloid merchandise, built end to end on my own.</p>
+      <dl>
+        <dt>ROLE</dt><dd data-en="Solo: schema, API, frontend" data-ja="個人開発：スキーマ・API・フロント">Solo: schema, API, frontend</dd>
+        <dt>DECISION</dt><dd class="muted" data-en="[Your real trade-off here, e.g. why cart state lives on the server]" data-ja="［実際の技術判断を記入］">[Your real trade-off here, e.g. why cart state lives on the server]</dd>
+      </dl>
+      <div class="tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Node.js</span></div>
+      <div class="actions"><a href="#work">Live demo ↗</a><a href="#work">Source ↗</a></div>
+    </div>
+  </article>
+
+  <!-- Project 2: text-first, image right -->
+  <article class="grid proj p2">
+    <div class="text">
+      <h3 data-en="Flight Lifecycle Tracker" data-ja="フライト・ライフサイクル・トラッカー">Flight Lifecycle Tracker</h3>
+      <p class="muted" style="margin-top:8px" data-en="Models a flight as a state machine, from scheduled to arrived, with the rules for which transitions are allowed." data-ja="予定から到着までのフライトを状態遷移として表現し、許可される遷移のルールを定義。">Models a flight as a state machine, from scheduled to arrived, with the rules for which transitions are allowed.</p>
+      <dl>
+        <dt>CONTEXT</dt><dd data-en="Learning aviation operations as a domain" data-ja="航空運航ドメインの学習">Learning aviation operations as a domain</dd>
+        <dt>HARD PART</dt><dd class="muted" data-en="[Describe a real constraint, e.g. handling delays that reorder events]" data-ja="［実際に苦労した点を記入］">[Describe a real constraint, e.g. handling delays that reorder events]</dd>
+      </dl>
+      <div class="tags"><span class="tag">State machine</span><span class="tag">Domain modeling</span></div>
+    </div>
+    <div class="shot-wrap">
+      <figure class="shot">
+        <div class="mock" role="img" aria-label="Mock operations screen listing flights and their states">
+          <div class="mock-top"><span>Ops board</span><i></i></div>
+          <div class="mock-rows">
+            <div class="mock-row"><span>KIX</span><i></i><b>BOARDING</b></div>
+            <div class="mock-row"><span>HND</span><i></i><b>DELAYED</b></div>
+            <div class="mock-row"><span>ICN</span><i></i><b>SCHEDULED</b></div>
+            <div class="mock-row"><span>SYD</span><i></i><b>ARRIVED</b></div>
+            <div class="mock-row"><span>NRT</span><i></i><b>TAXIING</b></div>
+          </div>
+        </div>
+        <figcaption class="meta">Operations board (placeholder capture)</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- Project 3: technical breakdown, no screenshot -->
+  <article class="grid proj p3">
+    <div class="text">
+      <h3 data-en="University Library System" data-ja="大学図書館管理システム">University Library System</h3>
+      <p class="muted" style="margin-top:8px" data-en="A greenfield design exercise focused on getting the domain model right before any screens exist." data-ja="画面より先にドメインモデルを固めることに焦点を当てた新規設計。">A greenfield design exercise focused on getting the domain model right before any screens exist.</p>
+      <div class="tags"><span class="tag">DDD</span><span class="tag">ERD</span></div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-row"><span class="meta">AGGREGATES</span><p>[Loan, Member, Copy — your actual boundaries]</p></div>
+      <div class="breakdown-row"><span class="meta">INVARIANT</span><p>[A real business rule, e.g. how many loans a member may hold]</p></div>
+      <div class="breakdown-row"><span class="meta">OPEN QUESTION</span><p>[Something you're still deciding, and why it's hard]</p></div>
+    </div>
+  </article>
+</section>
+
+<!-- ============ JOURNEY ============ -->
+<section class="block" id="journey" aria-labelledby="journey-h">
+  <div class="sec-head">
+    <h2 id="journey-h" data-en="Journey" data-ja="経歴">Journey</h2>
+    <span class="meta">KR → AU → JP</span>
+  </div>
+  <ol class="journey">
+    <li>
+      <span class="meta date">20XX – 20XX</span><span class="place">Australia</span>
+      <div><h3 data-en="Systems administration degree, Charles Sturt University" data-ja="チャールズ・スタート大学 システム管理学位">Systems administration degree, Charles Sturt University</h3>
+      <p data-en="Solo capstone: deployed a GCP environment with VPN, BGP routing and IAM." data-ja="個人での卒業制作：GCP上でVPN・BGP・IAMを構築。">Solo capstone: deployed a GCP environment with VPN, BGP routing and IAM.</p></div>
+    </li>
+    <li>
+      <span class="meta date">20XX</span><span class="place">Korea</span>
+      <div><h3 data-en="Coding bootcamp" data-ja="コーディング・ブートキャンプ">Coding bootcamp</h3>
+      <p data-en="Moved from infrastructure into application development." data-ja="インフラからアプリケーション開発へ転向。">Moved from infrastructure into application development.</p></div>
+    </li>
+    <li class="now">
+      <span class="meta date">20XX – now</span><span class="place">Japan</span>
+      <div><h3 data-en="Full-stack and Android engineer, Osaka" data-ja="フルスタック／Androidエンジニア（大阪）">Full-stack and Android engineer, Osaka</h3>
+      <p data-en="Java and Kotlin on Android; now focused on TypeScript, React and Node.js." data-ja="AndroidでJava・Kotlinを経験。現在はTypeScript・React・Node.jsに注力。">Java and Kotlin on Android; now focused on TypeScript, React and Node.js.</p></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section class="block" id="skills" aria-labelledby="skills-h">
+  <div class="sec-head">
+    <h2 id="skills-h" data-en="Skills, with evidence" data-ja="スキルと根拠">Skills, with evidence</h2>
+    <span class="meta">each links to where it was used</span>
+  </div>
+  <div class="skills">
+    <div><h3>Frontend</h3><ul>
+      <li><span>React</span><a href="#work">VocaloCart</a></li>
+      <li><span>TypeScript</span><a href="#work">VocaloCart</a></li>
+      <li><span>Next.js / Vite</span><a href="#work">[project]</a></li>
+    </ul></div>
+    <div><h3>Backend</h3><ul>
+      <li><span>Node.js / Express</span><a href="#work">VocaloCart</a></li>
+      <li><span>Domain modeling</span><a href="#work">Library System</a></li>
+      <li><span>State machines</span><a href="#work">Flight Tracker</a></li>
+    </ul></div>
+    <div><h3>Infra &amp; mobile</h3><ul>
+      <li><span>GCP · VPN · BGP · IAM</span><a href="#journey">Capstone</a></li>
+      <li><span>Kotlin / Android</span><a href="#journey">Work</a></li>
+      <li><span>Java</span><a href="#journey">Work</a></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="block grid contact" id="contact" aria-labelledby="contact-h">
+  <h2 id="contact-h" class="big">you@example.com<small data-en="Email is fastest. I reply in Japanese, English or Korean." data-ja="メールが一番早いです。日本語・英語・韓国語で返信します。">Email is fastest. I reply in Japanese, English or Korean.</small></h2>
+  <div class="side">
+    <a class="btn btn-primary" href="#contact">Résumé (PDF)</a>
+    <a class="btn btn-outline" href="#contact">GitHub</a>
+  </div>
+</section>
+
+<!-- ============ SPECIMEN ============ -->
+<div class="spec-divider" id="specimen">
+  <h2>Theme specimen</h2>
+  <span class="meta">app/globals.css · dark only</span>
+</div>
+
+<section class="grid spec" aria-labelledby="sp-color">
+  <div class="label"><h3 id="sp-color">Color</h3><p>Neutral warm near-black, one green for interaction, orange held back for status. Ratios are WCAG contrast against the background, or against the paired fill.</p></div>
+  <div class="body swatches">
+    <div class="sw"><div class="chip" style="background:var(--background);color:var(--foreground)"><span>Aa</span><span>16.9</span></div><span class="name">--background</span><span class="val">0.155 0.006 85</span></div>
+    <div class="sw"><div class="chip" style="background:var(--foreground);color:var(--background)"><span>Aa</span></div><span class="name">--foreground</span><span class="val">0.95 0.01 90</span></div>
+    <div class="sw"><div class="chip" style="background:var(--primary);color:var(--primary-foreground);border-color:var(--primary)"><span>Aa</span><span>10.2</span></div><span class="name">--primary</span><span class="val">0.78 0.19 145</span></div>
+    <div class="sw"><div class="chip" style="background:var(--highlight);color:var(--highlight-foreground);border-color:var(--highlight)"><span>Aa</span><span>7.6</span></div><span class="name">--highlight</span><span class="val">0.74 0.19 50</span></div>
+    <div class="sw"><div class="chip" style="background:var(--destructive);color:var(--destructive-foreground);border-color:var(--destructive)"><span>Aa</span><span>5.1</span></div><span class="name">--destructive</span><span class="val">0.64 0.22 25</span></div>
+    <div class="sw"><div class="chip" style="background:var(--card);color:var(--foreground)"><span>Aa</span></div><span class="name">--card</span><span class="val">0.19 0.006 85</span></div>
+    <div class="sw"><div class="chip" style="background:var(--muted);color:var(--muted-foreground)"><span>Aa</span><span>7.0</span></div><span class="name">--muted / -fg</span><span class="val">0.22 / 0.72</span></div>
+    <div class="sw"><div class="chip" style="background:var(--accent);color:var(--foreground)"><span>hover</span></div><span class="name">--accent</span><span class="val">0.26 0.008 85</span></div>
+    <div class="sw"><div class="chip" style="background:var(--background);border:1px solid var(--input);color:var(--muted-foreground)"><span>input</span><span>3.5</span></div><span class="name">--input</span><span class="val">0.52 0.008 85</span></div>
+    <div class="sw"><div class="chip" style="background:var(--background);color:var(--muted-foreground)"><span>border</span><span>1.7</span></div><span class="name">--border</span><span class="val">decorative only</span></div>
+  </div>
+</section>
+
+<section class="grid spec" aria-labelledby="sp-type">
+  <div class="label"><h3 id="sp-type">Type scale</h3><p>Space Grotesk for display, IBM Plex Sans for reading, JetBrains Mono for metadata only.</p></div>
+  <div class="body scale">
+    <div class="scale-row"><span class="meta">text-hero<br>clamp 48→112</span><div style="font-family:var(--font-display);font-size:var(--text-hero);line-height:.92;letter-spacing:-.04em;font-weight:600">Osaka</div></div>
+    <div class="scale-row"><span class="meta">text-section<br>clamp 32→64</span><div style="font-family:var(--font-display);font-size:var(--text-section);line-height:1;letter-spacing:-.025em;font-weight:600">Selected work</div></div>
+    <div class="scale-row"><span class="meta">text-subhead<br>22px</span><div style="font-family:var(--font-display);font-size:var(--text-subhead);letter-spacing:-.01em;font-weight:500">Flight Lifecycle Tracker</div></div>
+    <div class="scale-row"><span class="meta">text-body<br>17px / 1.6</span><div class="measure">Body copy sits at 17px with a 1.6 line height and stops at 68 characters, which keeps case studies easy to read at any width.</div></div>
+    <div class="scale-row"><span class="meta">text-body :lang(ja)<br>17px / 1.8</span><div class="measure" lang="ja"><p>日本語の本文は行間を1.8に広げ、字間をわずかに開けています。見出しでは負の字間を使いません。</p></div></div>
+    <div class="scale-row"><span class="meta">text-small<br>15px</span><div style="font-size:var(--text-small)">Captions, table cells, secondary copy.</div></div>
+    <div class="scale-row"><span class="meta">text-meta<br>13px mono</span><div class="meta">2026-09-25 · v1.4.0 · TYPESCRIPT</div></div>
+  </div>
+</section>
+
+<section class="grid spec" aria-labelledby="sp-comp">
+  <div class="label"><h3 id="sp-comp">Components</h3><p>shadcn primitives restyled through tokens. Hover the buttons and tab through the controls to see focus rings.</p></div>
+  <div class="body comp-grid">
+    <div class="comp">
+      <span class="meta">BUTTON VARIANTS</span>
+      <div class="row">
+        <button class="btn btn-primary" type="button">Primary</button>
+        <button class="btn btn-outline" type="button">Outline</button>
+        <button class="btn btn-secondary" type="button">Secondary</button>
+      </div>
+      <div class="row">
+        <button class="btn btn-ghost" type="button">Ghost</button>
+        <button class="btn btn-destructive" type="button">Delete</button>
+        <button class="btn btn-primary" type="button" disabled>Disabled</button>
+      </div>
+    </div>
+    <div class="comp">
+      <span class="meta">INPUT · ERROR STATE</span>
+      <div class="field"><label for="f-name">Name</label><input class="input" id="f-name" placeholder="山田 太郎"></div>
+      <div class="field"><label for="f-mail">Email</label><input class="input" id="f-mail" value="you@" aria-invalid="true" aria-describedby="f-mail-err"><span class="err" id="f-mail-err">Enter a full address, like name@example.com</span></div>
+    </div>
+    <div class="comp">
+      <span class="meta">MENU · --popover + --accent hover</span>
+      <div class="menu" role="presentation">
+        <div>English <span class="meta">EN</span></div>
+        <div class="hl">日本語 <span class="meta">JA</span></div>
+        <div>한국어 <span class="meta">KO</span></div>
+      </div>
+    </div>
+    <div class="comp">
+      <span class="meta">DIALOG · --shadow-hard</span>
+      <div class="dialog">
+        <h4>Download résumé?</h4>
+        <p>The PDF is 2 pages, in English and Japanese.</p>
+        <div class="row"><button class="btn btn-primary" type="button">Download</button><button class="btn btn-ghost" type="button">Cancel</button></div>
+      </div>
+    </div>
+    <div class="comp" style="grid-column:1 / -1">
+      <span class="meta">CODE</span>
+<pre class="code"><span class="c">// flight.ts: allowed transitions</span>
+<span class="k">const</span> transitions = {
+  scheduled: [<span class="s">"boarding"</span>, <span class="s">"delayed"</span>, <span class="s">"cancelled"</span>],
+  boarding:  [<span class="s">"taxiing"</span>, <span class="s">"delayed"</span>],
+} <span class="k">as const</span>;</pre>
+    </div>
+  </div>
+</section>
+
+<section class="grid spec" aria-labelledby="sp-rules">
+  <div class="label"><h3 id="sp-rules">Shape &amp; restraint</h3><p>What the tokens make impossible, and what's still on you.</p></div>
+  <div class="body dodont">
+    <div class="dd do"><h4>Do</h4><ul>
+      <li>4px corners everywhere; <code>rounded-full</code> only for dots and avatars</li>
+      <li>One hard shadow per viewport, for the thing that matters</li>
+      <li>At most one orange element on screen</li>
+      <li>Frame every screenshot with <code>.shot</code></li>
+    </ul></div>
+    <div class="dd dont"><h4>Don't</h4><ul>
+      <li>Soft shadows (the token scale is zeroed, so they render as nothing)</li>
+      <li>Borders on every block</li>
+      <li>Fade-in on scroll</li>
+      <li>Scanlines, CRT or glitch effects</li>
+    </ul></div>
+  </div>
+</section>
+
+<footer><span class="meta">Preview of docs/design.md + app/globals.css · tokens mirrored exactly</span></footer>
+</div>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.seg button');
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-en]').forEach(function(el){
+      var t = el.getAttribute('data-' + l); if (t) el.textContent = t;
+    });
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.lang); }); });
+  document.documentElement.lang = 'en';
+})();
+</script>
+</body>
+</html>
