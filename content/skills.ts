@@ -69,19 +69,9 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    id: "mobile-infra",
-    title: { ja: "Mobile & infra", en: "Mobile & infra" },
+    id: "infra",
+    title: { ja: "Infra", en: "Infra" },
     items: [
-      {
-        name: "Kotlin / Jetpack Compose",
-        evidence: { ja: "Infocia Android", en: "Infocia Android" },
-        href: "#journey",
-      },
-      {
-        name: "BLE / GPS",
-        evidence: { ja: "ナビアプリ", en: "Navigation app" },
-        href: "#journey",
-      },
       {
         name: "Docker / AWS RDS",
         evidence: { ja: "Cafe kiosk", en: "Cafe kiosk" },
