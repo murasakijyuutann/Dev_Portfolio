@@ -58,7 +58,7 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
           href="#top"
           className="shrink-0 font-display text-small font-semibold text-foreground no-underline hover:text-primary"
         >
-          {profile.name.display}
+          {t(profile.name.short, locale)}
         </a>
         <ul className="ml-auto flex items-center gap-3 sm:gap-5">
           {SECTIONS.map((s) => (

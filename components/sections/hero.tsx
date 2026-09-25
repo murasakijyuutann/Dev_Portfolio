@@ -18,9 +18,31 @@ export function Hero({ locale }: HeroProps) {
         <p className="meta mb-6">{t(profile.eyebrow, locale)}</p>
         <h1
           id="hero-name"
-          className="font-display text-hero font-semibold tracking-tight"
+          className={cn(
+            "font-display text-hero font-semibold tracking-tight",
+            locale === "en" && "whitespace-nowrap",
+            locale === "ja" && "leading-[1.2]",
+          )}
         >
-          {profile.name.display}
+          {locale === "ja" ? (
+            <>
+              <ruby className="ruby-name">
+                {profile.name.family.kanji}
+                <rp>(</rp>
+                <rt>{profile.name.family.kana}</rt>
+                <rp>)</rp>
+              </ruby>
+              <span className="inline-block w-[0.25em]" aria-hidden="true" />
+              <ruby className="ruby-name">
+                {profile.name.given.kanji}
+                <rp>(</rp>
+                <rt>{profile.name.given.kana}</rt>
+                <rp>)</rp>
+              </ruby>
+            </>
+          ) : (
+            profile.name.en
+          )}
           <span className="text-primary" aria-hidden="true">
             _
           </span>

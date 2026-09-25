@@ -8,7 +8,7 @@ writeFileSync(
   <meta charset="utf-8" />
   <meta http-equiv="refresh" content="0; url=/ja/" />
   <link rel="canonical" href="/ja/" />
-  <title>Woo Sunmyung</title>
+  <title>Sunmyung Woo</title>
 </head>
 <body>
   <p><a href="/ja/">日本語ポートフォリオへ / Continue to Japanese portfolio</a></p>

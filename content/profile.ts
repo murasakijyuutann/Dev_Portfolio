@@ -2,9 +2,20 @@ import type { Localized } from "@/lib/i18n";
 
 export const profile = {
   name: {
-    display: "Woo Sunmyung",
-    ja: "禹 善明",
-    reading: "ウ ソンミョン",
+    /** Compact label for header / nav */
+    short: {
+      ja: "禹 善明",
+      en: "Sunmyung Woo",
+    } satisfies Localized,
+    family: {
+      kanji: "禹",
+      kana: "ウ",
+    },
+    given: {
+      kanji: "善明",
+      kana: "ソンミョン",
+    },
+    en: "Sunmyung Woo",
   },
   city: {
     ja: "大阪",
@@ -47,7 +58,7 @@ export const profile = {
   meta: {
     title: {
       ja: "禹 善明 — フルスタックエンジニア",
-      en: "Woo Sunmyung — Full-stack engineer",
+      en: "Sunmyung Woo — Full-stack engineer",
     } satisfies Localized,
     description: {
       ja: "TypeScript / React / Spring Boot を軸にしたフルスタックエンジニア。バックエンド設計とセキュリティ監査の実績。大阪。",
