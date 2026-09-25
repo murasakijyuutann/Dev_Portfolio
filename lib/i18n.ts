@@ -20,9 +20,9 @@ export const ui = {
     contact: { ja: "連絡先", en: "Contact" },
   },
   sections: {
-    projects: { ja: "主な制作物", en: "Selected work" },
+    projects: { ja: "主要プロジェクト", en: "Selected work" },
     journey: { ja: "経歴", en: "Journey" },
-    skills: { ja: "スキルと根拠", en: "Skills, with evidence" },
+    skills: { ja: "技術スタックと活用実績", en: "Skills, with evidence" },
     contact: { ja: "連絡先", en: "Contact" },
   },
   meta: {
