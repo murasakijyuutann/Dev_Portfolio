@@ -36,6 +36,7 @@ export const ui = {
   actions: {
     seeWork: { ja: "制作物を見る", en: "See selected work" },
     resume: { ja: "履歴書（PDF）", en: "Résumé (PDF)" },
+    careerHistory: { ja: "職務経歴書（PDF）", en: "Career history (PDF)" },
     source: { ja: "ソース ↗", en: "Source ↗" },
     github: { ja: "GitHub", en: "GitHub" },
     emailFastest: {

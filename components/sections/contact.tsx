@@ -1,3 +1,4 @@
+import { PdfDownloadGroup } from "@/components/pdf-download-link";
 import { buttonVariants } from "@/components/ui/button";
 import { profile } from "@/content/profile";
 import { t, ui, type Locale } from "@/lib/i18n";
@@ -30,17 +31,16 @@ export function Contact({ locale }: ContactProps) {
           </small>
         </h2>
         <div className="col-span-12 flex flex-wrap gap-3 md:col-span-3 md:col-start-10">
-          <a
-            href={profile.resumeHref}
-            className={cn(buttonVariants({ variant: "primary" }), "no-underline")}
-          >
-            {t(ui.actions.resume, locale)}
-          </a>
+          <PdfDownloadGroup
+            locale={locale}
+            resumeVariant="primary"
+            careerVariant="outline"
+          />
           <a
             href={profile.github}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(buttonVariants({ variant: "outline" }), "no-underline")}
+            className={cn(buttonVariants({ variant: "ghost" }), "no-underline")}
           >
             {t(ui.actions.github, locale)}
           </a>

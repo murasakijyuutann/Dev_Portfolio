@@ -1,3 +1,4 @@
+import { PdfDownloadGroup } from "@/components/pdf-download-link";
 import { buttonVariants } from "@/components/ui/button";
 import { profile } from "@/content/profile";
 import { t, ui, type Locale } from "@/lib/i18n";
@@ -37,12 +38,7 @@ export function Hero({ locale }: HeroProps) {
           >
             {t(ui.actions.seeWork, locale)}
           </a>
-          <a
-            href={profile.resumeHref}
-            className={cn(buttonVariants({ variant: "outline" }), "no-underline")}
-          >
-            {t(ui.actions.resume, locale)}
-          </a>
+          <PdfDownloadGroup locale={locale} />
         </div>
       </div>
       <aside

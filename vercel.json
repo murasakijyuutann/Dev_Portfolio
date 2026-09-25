@@ -5,5 +5,25 @@
       "destination": "/ja/",
       "permanent": false
     }
+  ],
+  "headers": [
+    {
+      "source": "/resume-ja.pdf",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"Woo_Sunmyung_rireki.pdf\"; filename*=UTF-8''Woo_Sunmyung_%E5%B1%A5%E6%AD%B4%E6%9B%B8.pdf"
+        }
+      ]
+    },
+    {
+      "source": "/career-history-ja.pdf",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"Woo_Sunmyung_shokumu.pdf\"; filename*=UTF-8''Woo_Sunmyung_%E8%81%B7%E5%8B%99%E7%B5%8C%E6%AD%B4%E6%9B%B8.pdf"
+        }
+      ]
+    }
   ]
 }

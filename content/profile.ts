@@ -26,7 +26,20 @@ export const profile = {
   github: "https://github.com/murasakijyuutann",
   githubLabel: "github.com/murasakijyuutann",
   qiita: "https://qiita.com/murasakijyuutann",
-  resumeHref: "/resume-ja.pdf",
+  documents: [
+    {
+      id: "resume",
+      href: "/resume-ja.pdf",
+      downloadName: "Woo_Sunmyung_履歴書.pdf",
+      label: { ja: "履歴書（PDF）", en: "Résumé (PDF)" },
+    },
+    {
+      id: "career-history",
+      href: "/career-history-ja.pdf",
+      downloadName: "Woo_Sunmyung_職務経歴書.pdf",
+      label: { ja: "職務経歴書（PDF）", en: "Career history (PDF)" },
+    },
+  ],
   languages: {
     ja: "KO · JA N1 · EN",
     en: "KO · JA N1 · EN",
